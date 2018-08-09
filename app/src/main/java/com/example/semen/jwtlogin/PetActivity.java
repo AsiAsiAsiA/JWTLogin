@@ -13,7 +13,7 @@ import java.util.List;
 
 public class PetActivity extends AppCompatActivity {
     public RecyclerView recyclerView;
-    public List<Pet> pets;
+    public List<Pet> pets = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

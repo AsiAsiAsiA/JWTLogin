@@ -1,5 +1,6 @@
 package com.example.semen.jwtlogin.adapter;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -7,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.semen.jwtlogin.PetDetailActivity;
 import com.example.semen.jwtlogin.R;
 import com.example.semen.jwtlogin.model.Pet;
 
@@ -14,7 +16,8 @@ import java.util.List;
 
 public class PetAdapter extends RecyclerView.Adapter<PetAdapter.PetViewHolder> {
 
-    private List<Pet> pets;
+    private List<Pet> pets = null;
+    private OnItemClickListener mItemClickListener;
 
     public PetAdapter(List<Pet> pets) {
         this.pets = pets;
@@ -29,11 +32,23 @@ public class PetAdapter extends RecyclerView.Adapter<PetAdapter.PetViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(@NonNull PetAdapter.PetViewHolder holder, int position) {
-        holder.id.setText("id: " + String.valueOf(pets.get(position).getId()));
-        holder.name.setText("name: " + pets.get(position).getName());
-        holder.age.setText("age: " + String.valueOf(pets.get(position).getAge()));
-        holder.userId.setText("userId: " + String.valueOf(pets.get(position).getUserId()));
+    public void onBindViewHolder(@NonNull PetAdapter.PetViewHolder holder, final int position) {
+        final Pet pet = pets.get(position);
+
+        holder.id.setText("id: " + String.valueOf(pet.getId()));
+        holder.name.setText("name: " + pet.getName());
+//        holder.age.setText("age: " + String.valueOf(pets.get(position).getAge()));
+//        holder.userId.setText("userId: " + String.valueOf(pets.get(position).getUserId()));
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                System.out.println(position);
+                Intent intent = new Intent(v.getContext(), PetDetailActivity.class);
+                intent.putExtra("pet", pet);
+                v.getContext().startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -41,18 +56,32 @@ public class PetAdapter extends RecyclerView.Adapter<PetAdapter.PetViewHolder> {
         return pets.size();
     }
 
-    public static class PetViewHolder extends RecyclerView.ViewHolder {
+
+
+    public class PetViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView id;
         TextView name;
-        TextView age;
-        TextView userId;
 
         public PetViewHolder(View itemView) {
             super(itemView);
+            itemView.setOnClickListener(this);
             id = itemView.findViewById(R.id.id);
             name = itemView.findViewById(R.id.name);
-            age = itemView.findViewById(R.id.age);
-            userId = itemView.findViewById(R.id.userId);
         }
+
+        @Override
+        public void onClick(View v) {
+            if (mItemClickListener != null) {
+                mItemClickListener.onItemClick(v, getAdapterPosition());
+            }
+        }
+    }
+
+    public interface OnItemClickListener {
+        public void onItemClick(View view , int position);
+    }
+
+    public void SetOnItemClickListener(final OnItemClickListener mItemClickListener) {
+        this.mItemClickListener = mItemClickListener;
     }
 }

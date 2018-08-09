@@ -1,39 +1,53 @@
 package com.example.semen.jwtlogin.controller;
 
-import android.content.SharedPreferences;
+import com.example.semen.jwtlogin.managers.HeaderInterceptor;
 
-import com.example.semen.jwtlogin.api.Api;
-import com.example.semen.jwtlogin.managers.DataManager;
-import com.example.semen.jwtlogin.managers.PreferencesManager;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
-import java.io.IOException;
-
-import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class Controller {
     static final String BASE_URL = "https://petshop-server.herokuapp.com/";
 
+    private static OkHttpClient.Builder sHttpClient = new OkHttpClient.Builder();
 
+    private static Retrofit.Builder sBuilder =
+            new Retrofit.Builder()
+                    .baseUrl(BASE_URL)
+                    .addConverterFactory(GsonConverterFactory.create());
 
+    public static <S> S createService(Class<S> serviceClass) {
 
-    public static Api getApi() {
-        Gson gson = new GsonBuilder()
-                .setLenient()
-                .create();
+//        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+//        logging.setLevel(HttpLoggingInterceptor.Level.BODY);
 
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create(gson))
+        sHttpClient.addInterceptor(new HeaderInterceptor());
+//        sHttpClient.addInterceptor(logging);
+//        sHttpClient.connectTimeout(AppConfig.MAX_CONNECT_TIMEOUT, TimeUnit.MILLISECONDS);
+//        sHttpClient.readTimeout(AppConfig.MAX_READ_TIMEOUT, TimeUnit.MILLISECONDS);
+//        sHttpClient.cache(new Cache(DevIntensiveApp.getContext().getCacheDir(), Integer.MAX_VALUE));
+//        sHttpClient.addNetworkInterceptor(new StethoInterceptor());
+
+        Retrofit retrofit = sBuilder
+                .client(sHttpClient.build())
                 .build();
-
-        Api api = retrofit.create(Api.class);
-        return api;
+        return  retrofit.create(serviceClass);
     }
+
+
+//    public static Api getApi() {
+//        Gson gson = new GsonBuilder()
+//                .setLenient()
+//                .create();
+//
+//        Retrofit retrofit = new Retrofit.Builder()
+//                .baseUrl(BASE_URL)
+//                .addConverterFactory(GsonConverterFactory.create(gson))
+//                .build();
+//
+//        Api api = retrofit.create(Api.class);
+//        return api;
+//    }
+
+
 }
