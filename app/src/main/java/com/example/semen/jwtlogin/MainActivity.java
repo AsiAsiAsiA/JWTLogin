@@ -13,7 +13,6 @@ import com.example.semen.jwtlogin.managers.DataManager;
 import com.example.semen.jwtlogin.model.Login;
 import com.example.semen.jwtlogin.model.Pet;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -58,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 login();
+                list();
             }
         });
 
@@ -79,8 +79,10 @@ public class MainActivity extends AppCompatActivity {
                 pets = new ArrayList<>();
                 pets.addAll(response.body());
 
+                dataManager.getDaoSession().getPetDao().insertOrReplaceInTx(pets);
+
                 Intent intent = new Intent(getApplicationContext(), PetActivity.class);
-                intent.putExtra("start", (Serializable) pets);
+//                intent.putExtra("start", (Serializable) pets);
                 startActivity(intent);
             }
 
@@ -107,7 +109,6 @@ public class MainActivity extends AppCompatActivity {
                     token = response.headers().get("access-token");
                     dataManager.getPreferencesManager().setAuthToken(token);
                     Toast.makeText(MainActivity.this, dataManager.getPreferencesManager().getAuthToken(), Toast.LENGTH_SHORT).show();
-                    list();
                 } else {
                     Toast.makeText(MainActivity.this, "Not successful", Toast.LENGTH_SHORT).show();
                 }

@@ -1,11 +1,18 @@
 package com.example.semen.jwtlogin.model;
 
-import java.io.Serializable;
-
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import org.greenrobot.greendao.annotation.Entity;
+import org.greenrobot.greendao.annotation.Generated;
+
+import java.io.Serializable;
+
+@Entity
 public class Pet implements Serializable {
+
+//    @Id
+//    private Long ids;
 
     @SerializedName("id")
     @Expose
@@ -20,46 +27,40 @@ public class Pet implements Serializable {
     @Expose
     private Integer userId;
     private final static long serialVersionUID = 2292327506375878095L;
-
-    public Integer getId() {
-        return id;
+    @Generated(hash = 1916802310)
+    public Pet(Integer id, String name, Integer age, Integer userId) {
+        this.id = id;
+        this.name = name;
+        this.age = age;
+        this.userId = userId;
     }
-
+    @Generated(hash = 1478286243)
+    public Pet() {
+    }
+    public Integer getId() {
+        return this.id;
+    }
     public void setId(Integer id) {
         this.id = id;
     }
-
     public String getName() {
-        return name;
+        return this.name;
     }
-
     public void setName(String name) {
         this.name = name;
     }
-
     public Integer getAge() {
-        return age;
+        return this.age;
     }
-
     public void setAge(Integer age) {
         this.age = age;
     }
-
     public Integer getUserId() {
-        return userId;
+        return this.userId;
     }
-
     public void setUserId(Integer userId) {
         this.userId = userId;
     }
 
-    @Override
-    public String toString() {
-        return String.format(
-                "id: %d%n" +
-                "name: %s%n" +
-                "age: %d%n" +
-                "userId: %d%n",
-                new Object[]{id, name, age, userId});
-    }
+
 }

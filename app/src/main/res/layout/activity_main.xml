@@ -27,7 +27,7 @@
             android:id="@+id/login"
             android:layout_width="match_parent"
             android:layout_height="42dp"
-            android:hint="login" />
+            android:text="1" />
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
@@ -44,7 +44,7 @@
             android:id="@+id/password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="password"
+            android:text="1"
             android:inputType="textPassword" />
     </android.support.design.widget.TextInputLayout>
 
